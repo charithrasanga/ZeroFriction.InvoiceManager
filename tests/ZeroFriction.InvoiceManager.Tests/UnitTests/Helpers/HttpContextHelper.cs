@@ -1,0 +1,24 @@
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace ZeroFriction.InvoiceManager.Tests.UnitTests.Helpers
+{
+    public static class HttpContextHelper
+    {
+        public static HttpContext GetHttpContext()
+        {
+            var context = new DefaultHttpContext();
+            context.Request.Scheme = "http";
+            context.Request.Host = new HostString("testhost:80");
+            context.Request.PathBase = new PathString("/un?escaped/base");
+            context.Request.Path = new PathString("/un?escaped");
+            context.Request.QueryString = new QueryString("?name=val%23ue");
+
+            return context;
+
+        }
+    }
+}
