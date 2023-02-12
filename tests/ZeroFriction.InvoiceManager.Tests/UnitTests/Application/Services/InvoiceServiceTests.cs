@@ -43,7 +43,7 @@ namespace ZeroFriction.InvoiceManager.Tests.UnitTests.Application.Services
             //Assert
             Assert.NotNull(result);
 
-            Assert.Equal("Summary", result.Summary);
+            Assert.Equal("TotalAmount", result.Summary);
             Assert.Equal("Description", result.Description);
 
             Assert.NotNull(result.Id);

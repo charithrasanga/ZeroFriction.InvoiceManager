@@ -31,7 +31,7 @@ namespace ZeroFriction.InvoiceManager.Application.Services
             {
                 var newInvoiceCommand = _invoiceViewModelMapper.ConvertToNewInvoiceCommand(invoiceViewModel);
                 
-                var invoiceResult = await _mediator.SendAsync<Invoice>(newInvoiceCommand);
+                var invoiceResult = await _mediator.SendAsync<InvoiceHeader>(newInvoiceCommand);
 
                 return _invoiceViewModelMapper.ConstructFromEntity(invoiceResult);
             }

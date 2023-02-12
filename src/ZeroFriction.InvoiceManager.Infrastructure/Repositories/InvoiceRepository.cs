@@ -20,7 +20,7 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
             _db = db;
         }
 
-        public Task<Invoice> Add(Invoice invoice)
+        public Task<InvoiceHeader> Add(InvoiceHeader invoice)
         {
 
             var item = _db.Invoices.Add(invoice);
@@ -29,12 +29,12 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
             return Task.FromResult(item.Entity);
         }
 
-        public Task<List<Invoice>> FindAll()
+        public Task<List<InvoiceHeader>> FindAll()
         {
             return Task.FromResult(_db.Invoices.ToList());
         }
 
-        public Task<Invoice> FindById(Guid id)
+        public Task<InvoiceHeader> FindById(Guid id)
         {
             var invId = new InvoiceId(id);
 

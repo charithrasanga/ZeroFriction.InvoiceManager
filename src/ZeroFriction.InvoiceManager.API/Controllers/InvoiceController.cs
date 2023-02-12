@@ -41,10 +41,10 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Get Invoice by ID
+        /// Get InvoiceHeader by ID
         /// </summary>
-        /// <param name="id">Invoice ID</param>
-        /// <returns>Returns a Invoice by its ID</returns>
+        /// <param name="id">InvoiceHeader ID</param>
+        /// <returns>Returns a InvoiceHeader by its ID</returns>
         [HttpGet("{id}", Name = "Get")]
         [ProducesResponseType(typeof(InvoiceViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
@@ -62,7 +62,7 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Create a new Invoice
+        /// Create a new InvoiceHeader
         /// </summary>
         /// <param name="invoiceViewModel"></param>
         /// <returns></returns>
@@ -83,9 +83,9 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Delete a Invoice
+        /// Delete a InvoiceHeader
         /// </summary>
-        /// <param name="id">Invoice ID</param>
+        /// <param name="id">InvoiceHeader ID</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = "Delete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

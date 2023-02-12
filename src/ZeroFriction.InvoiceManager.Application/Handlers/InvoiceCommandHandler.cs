@@ -23,14 +23,14 @@ namespace ZeroFriction.InvoiceManager.Application.Handlers
             _mediator = mediator;
         }
 
-        public async Task<Invoice> HandleNewInvoice(CreateNewInvoiceCommand createNewInvoiceCommand)
+        public async Task<InvoiceHeader> HandleNewInvoice(CreateNewInvoiceCommand createNewInvoiceCommand)
         {
 
-            var inv = new Invoice
+            var inv = new InvoiceHeader
             {
                 Description = new Description(createNewInvoiceCommand.Description),
                 InvoiceId = new InvoiceId(createNewInvoiceCommand.Id),
-                Summary = new Summary(createNewInvoiceCommand.Summary)
+                Summary = new TotalAmount(createNewInvoiceCommand.Summary)
             };
 
             var invoiceCreated = await _invoiceRepository.Add(inv);

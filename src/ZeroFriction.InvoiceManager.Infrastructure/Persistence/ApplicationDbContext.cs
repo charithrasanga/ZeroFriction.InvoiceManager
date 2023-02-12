@@ -13,7 +13,7 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceHeader> Invoices { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -28,8 +28,8 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
             .HaveConversion<InvoiceIdConverter>();
 
             configurationBuilder
-            .Properties<Summary>()
-            .HaveConversion<SummaryConverter>();
+            .Properties<TotalAmount>()
+            .HaveConversion<TotalAmountConverter>();
 
             configurationBuilder
             .Properties<Description>()
@@ -39,14 +39,14 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            var invDataTemplate = new Faker<Invoice>()
+            var invDataTemplate = new Faker<InvoiceHeader>()
                 .RuleFor(m => m.InvoiceId, f => new InvoiceId(f.Random.Guid()))
-                .RuleFor(m => m.Summary, f => new Summary(f.Lorem.Text()))
+                .RuleFor(m => m.Summary, f => new TotalAmount(f.Lorem.Text()))
                 .RuleFor(m => m.Description, f => new Description(f.Lorem.Paragraph()));
 
-            // generate 1000 items
+            // generate sample items
             modelBuilder
-                .Entity<Invoice>()
+                .Entity<InvoiceHeader>()
                 .ToContainer("Invoices")
                 .HasPartitionKey(x => x.InvoiceId)
                 .HasData(invDataTemplate.GenerateBetween(2, 5));

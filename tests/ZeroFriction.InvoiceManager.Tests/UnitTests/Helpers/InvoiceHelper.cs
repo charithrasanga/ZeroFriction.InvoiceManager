@@ -13,7 +13,7 @@ namespace ZeroFriction.InvoiceManager.Tests.UnitTests.Helpers
             return new Invoice()
             {
                 InvoiceId = new InvoiceId(Guid.NewGuid()),
-                Summary = new Summary("Summary"),
+                Summary = new TotalAmount("TotalAmount"),
                 Description = new Description("Description")
             };
         }

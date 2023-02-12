@@ -20,7 +20,7 @@ namespace ZeroFriction.InvoiceManager.Application.Mappers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IEnumerable<InvoiceViewModel> ConstructFromListOfEntities(IEnumerable<Invoice> invoices)
+        public IEnumerable<InvoiceViewModel> ConstructFromListOfEntities(IEnumerable<InvoiceHeader> invoices)
         {
             var invoicesViewModel = invoices.Select(i => new InvoiceViewModel
             {
@@ -32,7 +32,7 @@ namespace ZeroFriction.InvoiceManager.Application.Mappers
             return invoicesViewModel;
         }
 
-        public InvoiceViewModel ConstructFromEntity(Invoice invoice)
+        public InvoiceViewModel ConstructFromEntity(InvoiceHeader invoice)
         {
             return new InvoiceViewModel
             {
