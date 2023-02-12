@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ZeroFriction.InvoiceManager.Domain.Invoice
+namespace ZeroFriction.InvoiceManager.Domain.Invoices
 {
     public interface IInvoiceRepository : IRepository<Invoice>
     {

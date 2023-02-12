@@ -1,46 +1,52 @@
-﻿using ZeroFriction.InvoiceManager.Domain.Invoice;
+﻿using ZeroFriction.InvoiceManager.Domain.Invoices;
 using ZeroFriction.InvoiceManager.Domain.Invoices.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using ZeroFriction.InvoiceManager.Infrastructure.Persistence;
 using System.Threading.Tasks;
-using ZeroFriction.InvoiceManager.Domain.Invoice;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
 {
- 
-    public class InvoiceRepository : IInvoiceRepository
-    {
-        private readonly IInvoiceFactory _invoiceFactory;
 
-        public InvoiceRepository(IInvoiceFactory invoiceFactory)
+    public class InvoiceRepository : IInvoiceRepository
+    { 
+        private readonly ApplicationDbContext _db;
+
+        public InvoiceRepository(ApplicationDbContext db)
         {
-            _invoiceFactory = invoiceFactory;
+            _db = db;
         }
 
         public Task<Invoice> Add(Invoice invoice)
         {
-            return Task.FromResult(
-                _invoiceFactory.CreateInvoiceInstance(new Summary("summary test"), new Description("description test")));
+
+            var item = _db.Invoices.Add(invoice);
+            _db.SaveChanges();
+
+            return Task.FromResult(item.Entity);
         }
 
         public Task<List<Invoice>> FindAll()
         {
-            var invoices = Task.FromResult(new List<Invoice> {
-                _invoiceFactory.CreateInvoiceInstance(new Summary("summary test"), new Description("description test"))});
-
-            return invoices;
+            return Task.FromResult(_db.Invoices.ToList());
         }
 
         public Task<Invoice> FindById(Guid id)
         {
-            return Task.FromResult(
-                _invoiceFactory.CreateInvoiceInstance(new Summary("summary test"), new Description("description test")));
+            var invId = new InvoiceId(id);
+
+            var foundInvoice = _db.Invoices.ToList().First(x=>x.InvoiceId.ToGuid() == invId.ToGuid());
+            return Task.FromResult(foundInvoice);
         }
 
         public Task Remove(Guid id)
         {
+            var foundInvoice = FindById(id).Result;
+            _db.Invoices.Remove(foundInvoice);
+            _db.SaveChanges();
             return Task.CompletedTask;
         }
     }

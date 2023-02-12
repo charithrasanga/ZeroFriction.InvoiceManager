@@ -1,33 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using ZeroFriction.InvoiceManager.API.Extensions.Middleware;
-using ZeroFriction.InvoiceManager.Application.Handlers;
-using ZeroFriction.InvoiceManager.Application.Mappers;
-using ZeroFriction.InvoiceManager.Application.Services;
-using ZeroFriction.InvoiceManager.Domain.Invoice;
-using ZeroFriction.InvoiceManager.Domain.Invoices.Commands;
-using ZeroFriction.InvoiceManager.Domain.Invoices.Events;
-using ZeroFriction.InvoiceManager.Infrastructure.Factories;
-using ZeroFriction.InvoiceManager.Infrastructure.Repositories;
 using FluentMediator;
 using Jaeger;
 using Jaeger.Samplers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using OpenTracing;
 using OpenTracing.Util;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
+using System.Reflection;
+using ZeroFriction.InvoiceManager.API.Extensions;
+using ZeroFriction.InvoiceManager.API.Extensions.Middleware;
+using ZeroFriction.InvoiceManager.Application.Handlers;
+using ZeroFriction.InvoiceManager.Application.Mappers;
+using ZeroFriction.InvoiceManager.Application.Services;
+using ZeroFriction.InvoiceManager.Domain.Invoices;
+using ZeroFriction.InvoiceManager.Domain.Invoices.Commands;
+using ZeroFriction.InvoiceManager.Domain.Invoices.Events;
+using ZeroFriction.InvoiceManager.Infrastructure.Persistence;
+using ZeroFriction.InvoiceManager.Infrastructure.Repositories;
 
 namespace ZeroFriction.InvoiceManager.API
 {
@@ -48,9 +43,9 @@ namespace ZeroFriction.InvoiceManager.API
             services.AddScoped<IInvoiceService, InvoiceService>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
             services.AddSingleton<InvoiceViewModelMapper>();
-            services.AddTransient<IInvoiceFactory, EntityFactory>();
 
-            
+            services.AddCosmosDb(Configuration);
+
 
             services.AddScoped<InvoiceCommandHandler>();
             services.AddScoped<InvoiceEventHandler>();
@@ -103,7 +98,15 @@ namespace ZeroFriction.InvoiceManager.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateAsyncScope();
+                var context = scope?.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context!.Database.EnsureDeleted();
+                context!.Database.EnsureCreated();
+
             }
+
+
 
             app.UseHttpsRedirection();
 
@@ -112,7 +115,7 @@ namespace ZeroFriction.InvoiceManager.API
             app.UseAuthorization();
 
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
