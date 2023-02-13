@@ -83,6 +83,27 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
+        /// Create a new Invoice
+        /// </summary>
+        /// <param name="invoiceViewModel"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(InvoiceViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Put([FromBody] InvoiceViewModel invoiceViewModel)
+        {
+            try
+            {
+                return Ok(await _invoiceService.Update(invoiceViewModel));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error: message: {ex.Message} ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new { exception_message = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// Delete a Invoice
         /// </summary>
         /// <param name="id">Invoice ID</param>

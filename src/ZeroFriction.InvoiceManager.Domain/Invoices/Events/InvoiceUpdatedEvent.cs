@@ -2,9 +2,9 @@
 
 namespace ZeroFriction.InvoiceManager.Domain.Invoices.Events
 {
-    public class InvoiceCreatedEvent : InvoiceEvent
+    public class InvoiceUpdatedEvent : InvoiceEvent
     {
-        public InvoiceCreatedEvent(Guid id, string description)
+        public InvoiceUpdatedEvent(Guid id, string description)
         {
             Id = id;
             Description = description;

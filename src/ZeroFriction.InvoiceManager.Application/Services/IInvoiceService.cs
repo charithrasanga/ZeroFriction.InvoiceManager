@@ -21,6 +21,7 @@ namespace ZeroFriction.InvoiceManager.Application.Services
         Task<IEnumerable<InvoiceViewModel>> GetAll();
         Task<InvoiceViewModel> GetById(Guid id);
         Task<InvoiceViewModel> Create(InvoiceViewModel invoiceViewModel);
+        Task<InvoiceViewModel> Update(InvoiceViewModel invoiceViewModel);
         Task Delete(Guid id);
     }
 }
