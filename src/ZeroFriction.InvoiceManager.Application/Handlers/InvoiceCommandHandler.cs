@@ -57,7 +57,8 @@ namespace ZeroFriction.InvoiceManager.Application.Handlers
             foundInvoice.InvoiceDate = updateInvoiceCommand.InvoiceDate;
             foundInvoice.Description = new Description(updateInvoiceCommand.Description);
             foundInvoice.InvoiceLines = updateInvoiceCommand.InvoiceLines;
-            foundInvoice.TotalAmount = new TotalAmount(updateInvoiceCommand.InvoiceLines.Sum(x=>x.LineTotal.ToDouble()));
+            double totalAmount = updateInvoiceCommand.InvoiceLines.Sum(x => x.LineTotal.ToDouble());
+            foundInvoice.TotalAmount = new TotalAmount(totalAmount);
 
           
             var invoiceUpdated  = await _invoiceRepository.Update(foundInvoice);

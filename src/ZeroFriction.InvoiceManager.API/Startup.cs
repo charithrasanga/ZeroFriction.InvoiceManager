@@ -102,6 +102,8 @@ namespace ZeroFriction.InvoiceManager.API
 
                 using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateAsyncScope();
                 var context = scope?.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+               
+                // let's drop and re-create the database everytime
                 context!.Database.EnsureDeleted();
                 context!.Database.EnsureCreated();
 
