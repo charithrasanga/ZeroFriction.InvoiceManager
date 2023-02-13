@@ -112,3 +112,7 @@ Welcome to **ZeroFriction.InvoiceManager**
 - **Application layer** impliments the business logic
 - **Domain layer** is where our domain  will be modeled and  patterns like Repository Pattern (only interfaces, not implementation) will be defined
 - **Infrastructure layer**  implements data access implementation where there need to be a seperation from Application layer
+
+
+### Postman Collection
+Please import the `New Collection.postman_collection.json`  found inside the **Postman Collection** directory
