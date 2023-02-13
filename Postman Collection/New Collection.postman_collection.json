@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "936d75dc-eff6-4a6d-9620-1dd9347ebbe5",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "update invoice",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/plain"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"83d8a5db-9574-42b8-b675-ca076895c5b2\",\n  \"invoiceDate\": \"2023-02-13T11:30:32.393Z\",\n  \"totalAmount\": 110,\n  \"description\": \"string\",\n  \"invoiceLines\": [\n    {\n      \"itemCode\": \"item1\",\n      \"qty\": 1,\n      \"unitPrice\": 60,\n      \"lineTotal\": 60\n    },\n {\n      \"itemCode\": \"item2\",\n      \"qty\": 1,\n      \"unitPrice\": 50,\n      \"lineTotal\": 50\n    },\n     {\n      \"itemCode\": \"item3\",\n      \"qty\": 1,\n      \"unitPrice\": 350,\n      \"lineTotal\": 50\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44366/api/Invoice",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"Invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Invoice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"83d8a5db-9574-42b8-b675-ca076895c5b2\",\r\n  \"invoiceDate\": \"2023-02-13T11:30:32.393Z\",\r\n  \"totalAmount\": 110,\r\n  \"description\": \"string\",\r\n  \"invoiceLines\": [\r\n    {\r\n      \"itemCode\": \"item1\",\r\n      \"qty\": 1,\r\n      \"unitPrice\": 60,\r\n      \"lineTotal\": 60\r\n    },\r\n {\r\n      \"itemCode\": \"item2\",\r\n      \"qty\": 1,\r\n      \"unitPrice\": 50,\r\n      \"lineTotal\": 50\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/api/Invoice",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api",
+						"Invoice"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
