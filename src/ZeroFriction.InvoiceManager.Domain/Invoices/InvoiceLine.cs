@@ -17,6 +17,7 @@ namespace ZeroFriction.InvoiceManager.Domain.Invoices
 
         public LineTotal LineTotal { get; set; }
 
+        public virtual Invoice Invoice { get; set; }
 
     }
 }
