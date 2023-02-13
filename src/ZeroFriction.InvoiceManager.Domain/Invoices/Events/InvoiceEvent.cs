@@ -10,6 +10,6 @@ namespace ZeroFriction.InvoiceManager.Domain.Invoices.Events
 
         public string Description { get; set; }
 
-        public string Summary { get; set; }
+        public double TotalAmount { get; set; }
     }
 }

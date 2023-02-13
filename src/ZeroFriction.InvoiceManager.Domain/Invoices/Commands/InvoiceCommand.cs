@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZeroFriction.InvoiceManager.Domain.Invoices.Commands
 {
@@ -8,6 +9,8 @@ namespace ZeroFriction.InvoiceManager.Domain.Invoices.Commands
 
         public string Description { get; set; }
 
-        public string Summary { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public List<InvoiceLine> InvoiceLines { get; set; }
+
     }
 }

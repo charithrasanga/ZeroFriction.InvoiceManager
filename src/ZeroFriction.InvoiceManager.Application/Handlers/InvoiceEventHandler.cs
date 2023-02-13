@@ -4,17 +4,21 @@ using System.Threading.Tasks;
 namespace ZeroFriction.InvoiceManager.Application.Handlers
 {
     public class InvoiceEventHandler
-    {
+    {   // Here you can do whatever you need with this event,
+        // you may send http calls to other apis. dispatch notification events via varios techniques
         public async Task HandleInvoiceCreatedEvent(InvoiceCreatedEvent invoiceCreatedEvent)
         {
-            // Here you can do whatever you need with this event, you can propagate the data using a queue, calling another API or sending a notification or whatever
-            // With this scenario, you are building a event driven architecture with microservices and DDD
+            // Handle Invoice Created Event
+        }
+
+        public async Task HandleInvoiceUpdatedEvent(InvoiceUpdatedEvent invoiceCreatedEvent)
+        {
+            //Handle Invoice Updated Event
         }
 
         public async Task HandleInvoiceDeletedEvent(InvoiceDeletedEvent invoiceDeletedEvent)
         {
-            // Here you can do whatever you need with this event, you can propagate the data using a queue, calling another API or sending a notification or whatever
-            // With this scenario, you are building a event driven architecture with microservices and DDD
+            // Handle Invoice DeletedEvent
         }
     }
 }
