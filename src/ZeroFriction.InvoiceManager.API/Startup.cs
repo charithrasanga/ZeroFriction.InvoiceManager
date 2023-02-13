@@ -54,12 +54,13 @@ namespace ZeroFriction.InvoiceManager.API
 
             services.AddFluentMediator(builder =>
             {
-                builder.On<CreateNewInvoiceCommand>().PipelineAsync().Return<InvoiceHeader, InvoiceCommandHandler>((handler, request) => handler.HandleNewInvoice(request));
-
+                builder.On<CreateNewInvoiceCommand>().PipelineAsync().Return<Invoice, InvoiceCommandHandler>((handler, request) => handler.HandleNewInvoice(request));
                 builder.On<InvoiceCreatedEvent>().PipelineAsync().Call<InvoiceEventHandler>((handler, request) => handler.HandleInvoiceCreatedEvent(request));
 
-                builder.On<DeleteInvoiceCommand>().PipelineAsync().Call<InvoiceCommandHandler>((handler, request) => handler.HandleDeleteInvoice(request));
+                builder.On<UpdateInvoiceCommand>().PipelineAsync().Return<Invoice, InvoiceCommandHandler>((handler, request) => handler.HandleUpdateInvoice(request));
+                builder.On<InvoiceUpdatedEvent>().PipelineAsync().Call<InvoiceEventHandler>((handler, request) => handler.HandleInvoiceUpdatedEvent(request));
 
+                builder.On<DeleteInvoiceCommand>().PipelineAsync().Call<InvoiceCommandHandler>((handler, request) => handler.HandleDeleteInvoice(request));
                 builder.On<InvoiceDeletedEvent>().PipelineAsync().Call<InvoiceEventHandler>((handler, request) => handler.HandleInvoiceDeletedEvent(request));
             });
 
@@ -126,7 +127,7 @@ namespace ZeroFriction.InvoiceManager.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZeroFriction InvoiceHeader Manager API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZeroFriction Invoice Manager API V1");
             });
         }
     }

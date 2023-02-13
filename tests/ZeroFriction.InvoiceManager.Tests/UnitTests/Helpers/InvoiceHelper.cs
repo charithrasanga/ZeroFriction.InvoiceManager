@@ -1,4 +1,4 @@
-﻿using ZeroFriction.InvoiceManager.Domain.Invoice;
+﻿using ZeroFriction.InvoiceManager.Domain.Invoices;
 using ZeroFriction.InvoiceManager.Domain.Invoices.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace ZeroFriction.InvoiceManager.Tests.UnitTests.Helpers
             return new Invoice()
             {
                 InvoiceId = new InvoiceId(Guid.NewGuid()),
-                Summary = new TotalAmount("TotalAmount"),
+              //  Summary = new TotalAmount("TotalAmount"),
                 Description = new Description("Description")
             };
         }

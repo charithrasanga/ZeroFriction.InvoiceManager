@@ -10,7 +10,6 @@ namespace ZeroFriction.InvoiceManager.Tests.UnitTests.Helpers
             return new InvoiceViewModel
             {
                 Id = Guid.NewGuid().ToString(),
-                Summary = "TotalAmount",
                 Description = "Description"
             };
         }

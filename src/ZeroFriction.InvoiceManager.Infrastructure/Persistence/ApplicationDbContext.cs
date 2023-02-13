@@ -13,7 +13,7 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<InvoiceHeader> Invoices { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,22 +34,30 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
             configurationBuilder
             .Properties<Description>()
             .HaveConversion<DescriptionConverter>();
+
+            configurationBuilder
+           .Properties<ItemCode>()
+           .HaveConversion<ItemCodeConverter>();
+
+            configurationBuilder
+           .Properties<LineTotal>()
+           .HaveConversion<LineTotalConverter>();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            var invDataTemplate = new Faker<InvoiceHeader>()
-                .RuleFor(m => m.InvoiceId, f => new InvoiceId(f.Random.Guid()))
-                .RuleFor(m => m.Summary, f => new TotalAmount(f.Lorem.Text()))
-                .RuleFor(m => m.Description, f => new Description(f.Lorem.Paragraph()));
+            //var invDataTemplate = new Faker<Invoice>()
+            //    .RuleFor(m => m.InvoiceId, f => new InvoiceId(f.Random.Guid()))
+            //    .RuleFor(m => m.Summary, f => new TotalAmount(f.Lorem.Text()))
+            //    .RuleFor(m => m.Description, f => new Description(f.Lorem.Paragraph()));
 
-            // generate sample items
-            modelBuilder
-                .Entity<InvoiceHeader>()
-                .ToContainer("Invoices")
-                .HasPartitionKey(x => x.InvoiceId)
-                .HasData(invDataTemplate.GenerateBetween(2, 5));
+            //// generate sample items
+            //modelBuilder
+            //    .Entity<Invoice>()
+            //    .ToContainer("Invoices")
+            //    .HasPartitionKey(x => x.InvoiceId)
+            //    .HasData(invDataTemplate.GenerateBetween(2, 5));
         }
 
     }

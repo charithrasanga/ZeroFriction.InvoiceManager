@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZeroFriction.InvoiceManager.Application.Mappers;
 using ZeroFriction.InvoiceManager.Domain.Invoices.ValueObjects;
+using System.Linq;
 
 namespace ZeroFriction.InvoiceManager.Application.Handlers
 {
@@ -23,33 +24,58 @@ namespace ZeroFriction.InvoiceManager.Application.Handlers
             _mediator = mediator;
         }
 
-        public async Task<InvoiceHeader> HandleNewInvoice(CreateNewInvoiceCommand createNewInvoiceCommand)
+        public async Task<Invoice> HandleNewInvoice(CreateNewInvoiceCommand createNewInvoiceCommand)
         {
 
-            var inv = new InvoiceHeader
+            double totalAmount = createNewInvoiceCommand.InvoiceLines.Sum(x=>x.LineTotal.ToDouble());
+            var inv = new Invoice
             {
                 Description = new Description(createNewInvoiceCommand.Description),
                 InvoiceId = new InvoiceId(createNewInvoiceCommand.Id),
-                Summary = new TotalAmount(createNewInvoiceCommand.Summary)
+                TotalAmount = new TotalAmount(totalAmount),
+                InvoiceDate = createNewInvoiceCommand.InvoiceDate,
+                InvoiceLines = createNewInvoiceCommand.InvoiceLines,
+              
             };
 
             var invoiceCreated = await _invoiceRepository.Add(inv);
 
-            // You may raise an event in case you need to propagate this change to other microservices
+            // raise an event in case you need to notify  this change to other subscriber
             await _mediator.PublishAsync(
                 new InvoiceCreatedEvent(invoiceCreated.InvoiceId.ToGuid(),
-                invoiceCreated.Description.ToString(), 
-                invoiceCreated.Summary.ToString())
+                invoiceCreated.Description.ToString())
                 );
 
             return invoiceCreated;
+        }
+
+        public async Task<Invoice> HandleUpdateInvoice(UpdateInvoiceCommand updateInvoiceCommand)
+        {
+            var foundInvoice = await _invoiceRepository.FindById(updateInvoiceCommand.Id);
+
+
+            foundInvoice.InvoiceDate = updateInvoiceCommand.InvoiceDate;
+            foundInvoice.Description = new Description(updateInvoiceCommand.Description);
+            foundInvoice.InvoiceLines = updateInvoiceCommand.InvoiceLines;
+            foundInvoice.TotalAmount = new TotalAmount(updateInvoiceCommand.InvoiceLines.Sum(x=>x.LineTotal.ToDouble()));
+
+          
+            var invoiceUpdated  = await _invoiceRepository.Update(foundInvoice);
+
+            // raise an event in case you need to notify  this change to other subscriber
+            await _mediator.PublishAsync(
+                new InvoiceUpdatedEvent(invoiceUpdated.InvoiceId.ToGuid(),
+                invoiceUpdated.Description.ToString())
+                );
+
+            return invoiceUpdated;
         }
 
         public async Task HandleDeleteInvoice(DeleteInvoiceCommand deleteInvoiceCommand)
         {
             await _invoiceRepository.Remove(deleteInvoiceCommand.Id);
 
-            // You may raise an event in case you need to propagate this change to other microservices
+            // raise an event in case you need to notify  this change to other subscriber
             await _mediator.PublishAsync(new InvoiceDeletedEvent(deleteInvoiceCommand.Id));
         }
     }

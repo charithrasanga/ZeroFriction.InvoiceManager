@@ -12,7 +12,7 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
 {
 
     public class InvoiceRepository : IInvoiceRepository
-    { 
+    {
         private readonly ApplicationDbContext _db;
 
         public InvoiceRepository(ApplicationDbContext db)
@@ -20,7 +20,7 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
             _db = db;
         }
 
-        public Task<InvoiceHeader> Add(InvoiceHeader invoice)
+        public Task<Invoice> Add(Invoice invoice)
         {
 
             var item = _db.Invoices.Add(invoice);
@@ -29,16 +29,24 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Repositories
             return Task.FromResult(item.Entity);
         }
 
-        public Task<List<InvoiceHeader>> FindAll()
+        public Task<Invoice> Update(Invoice invoice)
+        {
+
+            var updatedInvoice = _db.Invoices.Update(invoice);
+            _db.SaveChanges();
+            return Task.FromResult(updatedInvoice.Entity);
+        }
+
+        public Task<List<Invoice>> FindAll()
         {
             return Task.FromResult(_db.Invoices.ToList());
         }
 
-        public Task<InvoiceHeader> FindById(Guid id)
+        public Task<Invoice> FindById(Guid id)
         {
             var invId = new InvoiceId(id);
 
-            var foundInvoice = _db.Invoices.ToList().First(x=>x.InvoiceId.ToGuid() == invId.ToGuid());
+            var foundInvoice = _db.Invoices.ToList().First(x => x.InvoiceId.ToGuid() == invId.ToGuid());
             return Task.FromResult(foundInvoice);
         }
 

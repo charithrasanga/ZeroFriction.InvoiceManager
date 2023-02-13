@@ -31,7 +31,19 @@ namespace ZeroFriction.InvoiceManager.Application.Services
             {
                 var newInvoiceCommand = _invoiceViewModelMapper.ConvertToNewInvoiceCommand(invoiceViewModel);
                 
-                var invoiceResult = await _mediator.SendAsync<InvoiceHeader>(newInvoiceCommand);
+                var invoiceResult = await _mediator.SendAsync<Invoice>(newInvoiceCommand);
+
+                return _invoiceViewModelMapper.ConstructFromEntity(invoiceResult);
+            }
+        }
+
+        public async Task<InvoiceViewModel> Update(InvoiceViewModel invoiceViewModel)
+        {
+            using (var scope = _tracer.BuildSpan("Update_InvoiceService").StartActive(true))
+            {
+                var updateInvoiceCommand = _invoiceViewModelMapper.ConvertToUpdateInvoiceCommand(invoiceViewModel);
+
+                var invoiceResult = await _mediator.SendAsync<Invoice>(updateInvoiceCommand);
 
                 return _invoiceViewModelMapper.ConstructFromEntity(invoiceResult);
             }

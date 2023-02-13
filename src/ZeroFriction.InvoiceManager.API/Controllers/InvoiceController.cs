@@ -41,10 +41,10 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Get InvoiceHeader by ID
+        /// Get Invoice by ID
         /// </summary>
-        /// <param name="id">InvoiceHeader ID</param>
-        /// <returns>Returns a InvoiceHeader by its ID</returns>
+        /// <param name="id">Invoice ID</param>
+        /// <returns>Returns a Invoice by its ID</returns>
         [HttpGet("{id}", Name = "Get")]
         [ProducesResponseType(typeof(InvoiceViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
@@ -62,7 +62,7 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Create a new InvoiceHeader
+        /// Create a new Invoice
         /// </summary>
         /// <param name="invoiceViewModel"></param>
         /// <returns></returns>
@@ -83,9 +83,30 @@ namespace ZeroFriction.InvoiceManager.API.Controllers
         }
 
         /// <summary>
-        /// Delete a InvoiceHeader
+        /// Create a new Invoice
         /// </summary>
-        /// <param name="id">InvoiceHeader ID</param>
+        /// <param name="invoiceViewModel"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(InvoiceViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Put([FromBody] InvoiceViewModel invoiceViewModel)
+        {
+            try
+            {
+                return Ok(await _invoiceService.Update(invoiceViewModel));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error: message: {ex.Message} ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new { exception_message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Delete a Invoice
+        /// </summary>
+        /// <param name="id">Invoice ID</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = "Delete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
