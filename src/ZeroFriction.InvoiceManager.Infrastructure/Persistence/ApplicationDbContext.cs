@@ -1,6 +1,8 @@
 ﻿using Bogus;
+using Bogus.DataSets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,15 +51,28 @@ namespace ZeroFriction.InvoiceManager.Infrastructure.Persistence
 
             //var invDataTemplate = new Faker<Invoice>()
             //    .RuleFor(m => m.InvoiceId, f => new InvoiceId(f.Random.Guid()))
-            //    .RuleFor(m => m.Summary, f => new TotalAmount(f.Lorem.Text()))
+            //    .RuleFor(m => m.InvoiceDate, f => f.Date.Past())
+            //    .RuleFor(m => m.TotalAmount, f => new TotalAmount(Convert.ToDouble(f.Finance.Amount(150, 1000))))
+            //     .RuleFor(m => m.InvoiceLines, f => f.Make(f.Random.Number(2,10), () => new InvoiceLine { 
+
+            //         ItemCode = new ItemCode( f.Random.Replace("*********")),
+            //         LineTotal = new LineTotal(Convert.ToDouble(f.Finance.Amount(60, 250))),
+            //         Qty =f.Random.Int(1,5),
+            //         UnitPrice= Convert.ToDouble(f.Finance.Amount(10, 50)),
+
+            //     }))
             //    .RuleFor(m => m.Description, f => new Description(f.Lorem.Paragraph()));
 
-            //// generate sample items
+            modelBuilder
+                .Entity<Invoice>()
+                .ToContainer("Invoices")
+                .HasPartitionKey(x => x.InvoiceId);
+
             //modelBuilder
             //    .Entity<Invoice>()
             //    .ToContainer("Invoices")
             //    .HasPartitionKey(x => x.InvoiceId)
-            //    .HasData(invDataTemplate.GenerateBetween(2, 5));
+            //    .HasData(invDataTemplate.GenerateBetween(5, 10));
         }
 
     }
